@@ -4,7 +4,7 @@
     $error = null;
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-      if (empty($_POST["nombre"]) || empty($_POST["apellido"]) || empty($_POST["auto"]) || empty($_POST["telefono"])){
+      if (empty($_POST["Rut"]) || empty($_POST["nombre"]) || empty($_POST["auto"]) || empty($_POST["telefono"])){
         $error = "Por favor rellena todos los datos";
 
       }else if(strlen($_POST["telefono"])< 9){
@@ -12,14 +12,15 @@
 
       }else{
 
-        $nombre      = $_POST["nombre"];
-        $apellido    = $_POST["apellido"];
-        $auto        = $_POST["auto"];
-        $phoneNumber = $_POST["telefono"];
+
+        $rut      = $_POST["Rut"];
+        $nombre   = $_POST["nombre"];
+        $auto     = $_POST["auto"];
+        $telefono = $_POST["telefono"];
         
-        $statement = $conn->prepare("INSERT INTO info_cliente (nombre,apellido, 'auto',telefono) VALUES (:nombre,:apellido,:'auto', :telefono)");
-        $statement->bindParam(":nombre",   $_POST["nombre"]);
-        $statement->bindParam(":apellido", $_POST["apellido"]);
+        $statement = $conn->prepare("INSERT INTO info_cliente (Rut, nombre,apellido, 'auto',telefono) VALUES (:Rut, :nombre,:apellido,:'auto', :telefono)");
+        $statement->bindParam(":nombre",   $_POST["Rut"]);
+        $statement->bindParam(":apellido", $_POST["nombre"]);
         $statement->bindParam(":auto",     $_POST["auto"]);
         $statement->bindParam(":telefono", $_POST["telefono"]);
         $statement->execute();
@@ -101,6 +102,13 @@
                         
                   <?php } ?>
                   <form method="POST" action="add.php">
+                  <div class="mb-3 row">
+                      <label for="Rut" class="col-md-4 col-form-label text-md-end">RUT</label>
+        
+                      <div class="col-md-6">
+                        <input id="Rut" type="text" class="form-control" id="Rut" placeholder = "Ingrese el Rut" required autocomplete="Rut" autofocus>
+                      </div>
+                    </div>
                     <div class="mb-3 row">
                       <label for="nombre" class="col-md-4 col-form-label text-md-end">Nombre</label>
         
@@ -108,18 +116,9 @@
                         <input id="nombre" type="text" class="form-control" id="nombre" placeholder = "Ingrese el Nombre" required autocomplete="nombre" autofocus>
                       </div>
                     </div>
-
-
-                    <div class="mb-3 row">
-                      <label for="apellido" class="col-md-4 col-form-label text-md-end">Apellido</label>
-                      
-                      <div class="col-md-6">
-                        <input id="apellido" type="text" class="form-control" id="apellido"placeholder = "Ingrese el Apellido" required autocomplete="apellido" autofocus>
-                      </div>
-                    </div>
                     
                     <div class="mb-3 row">
-                    <label for="nombre" class="col-md-4 col-form-label text-md-end">Auto</label>
+                    <label for="auto" class="col-md-4 col-form-label text-md-end">Auto</label>
 
                     <div class="col-md-6">
                         <input id="auto" type="text" class="form-control" id="auto" placeholder = "Ingrese el Modelo del Auto" required autocomplete="auto" autofocus>

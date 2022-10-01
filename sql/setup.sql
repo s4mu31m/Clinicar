@@ -88,7 +88,6 @@ DROP TABLE IF EXISTS `info_cliente`;
 CREATE TABLE `info_cliente` (
   `Rut` varchar(20) NOT NULL,
   `nombre` char(20) DEFAULT NULL,
-  `apellido` char(20) DEFAULT NULL,
   `auto` varchar(30) DEFAULT NULL,
   `telefono` int DEFAULT NULL,
   PRIMARY KEY (`Rut`),
@@ -96,7 +95,7 @@ CREATE TABLE `info_cliente` (
   CONSTRAINT `Fk_Info_Cliente_` FOREIGN KEY (`Rut`) REFERENCES `auto` (`Patente`)
 );
 
-INSERT INTO `info_cliente` VALUES ('27169879-8','César','Linares','Chevrolet Spark',936936243),('27169879-K','Samuel','Montiel','Audi A8',936936224),('6289643-0','Pascual','Peralta','Ford F-150',936936242);
+INSERT INTO `info_cliente` VALUES ('27169879-8','César Linares','Chevrolet Spark',936936243),('27169879-K','Samuel Montiel','Audi A8',936936224),('6289643-0','Pascual Peralta','Ford F-150',936936242);
 
 
 UNLOCK TABLES;
@@ -106,7 +105,6 @@ DROP TABLE IF EXISTS `info_empleado`;
 CREATE TABLE `info_empleado` (
   `Cod_Empleado` int DEFAULT NULL,
   `nombre` char(10) DEFAULT NULL,
-  `apellido` char(10) DEFAULT NULL,
   KEY `Cod_Empleado` (`Cod_Empleado`),
   KEY `nombre` (`nombre`),
   CONSTRAINT `Fk_EmpleadoCOd_` FOREIGN KEY (`Cod_Empleado`) REFERENCES `empleado` (`Cod_Empleado`)

@@ -2,11 +2,11 @@
 
   require "db.php";
 
-  $Rut = $_GET ["Rut"];
+  $id = $_GET["Rut"];
 
-  $statement = $conn->prepare("SELECT * FROM info_cliente WHERE Rut = :Rut LIMIT 1");
-  $statement->execute([":Rut" => $Rut]);
-
+  $statement = $conn->prepare("SELECT * FROM info_cliente WHERE Rut = :id LIMIT 1");
+  $statement->execute([":id" => $id]);
+  
   if($statement->rowCount()== 0){
     http_response_code(404);
     echo("HTTP 404 NOT FOUND");
@@ -29,9 +29,9 @@
         $nombre = $_POST["nombre"];
         $telefono = $_POST["telefono"];
         
-        $statement = $conn->prepare("UPDATE info_cliente SET nombre = :nombre, telefono = :telefono WHERE Rut = :Rut ");
+        $statement = $conn->prepare("UPDATE info_cliente SET nombre = :nombre, telefono = :telefono WHERE Rut = :id ");
         $statement->execute ([
-          ":Rut" => $Rut,
+          ":id" => $id,
           ":nombre"=> $_POST["nombre"],
           "telefono"=> $_POST["telefono"],
         ]);
@@ -116,6 +116,14 @@
         
                       <div class="col-md-6">
                         <input value="<?= $cliente["nombre"]?>" Rut="nombre" type="text" class="form-control" nombre="nombre" required autocomplete="nombre" autofocus>
+                      </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                      <label for="nombre" class="col-md-4 col-form-label text-md-end">Auto</label>
+        
+                      <div class="col-md-6">
+                        <input value="<?= $cliente["auto"]?>" Rut="auto" type="text" class="form-control" nombre="auto" required autocomplete="nombre" autofocus>
                       </div>
                     </div>
         
