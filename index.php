@@ -32,14 +32,14 @@ require "db.php";
     <!-- Static Content -->
     <link rel="stylesheet"  href="./static/css/index.css" />
     
-    <title>Contacts App</title>
+    <title>Clinicar</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
           <a class="navbar-brand font-weight-bold" href="#">
             <img class="mr-2" src="./static/img/logo.png" />
-            ContactsApp
+            Clinicar
           </a>
           <button
             class="navbar-toggler"
@@ -52,13 +52,13 @@ require "db.php";
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="collapse navbar-collapse" Rut="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="index.php">Inicio</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="add.php">Agregar Contacto</a>
+                <a class="nav-link" href="add.php">Agregar Cliente</a>
               </li>
             </ul>
           </div>
@@ -72,7 +72,7 @@ require "db.php";
             <?php if ($clientes->rowCount() == 0){ ?>
               <div class="col-md-4 mx-auto">
             <div class="card card-body text-center">
-              <p>No tienes contactos guardados aún</p>
+              <p>No tienes Clientes registrados aún</p>
               <a href="add.php">Agrega uno!</a>
             </div>
           </div>
@@ -82,9 +82,10 @@ require "db.php";
                 <div class="card text-center">
                   <div class="card-body">
                     <h3 class="card-title text-capitalize"><?=$cliente["nombre"]?></h3>
+                    <p class="m-2"><?=$cliente["auto"]?></p>
                     <p class="m-2"><?=$cliente["telefono"]?></p>
-                    <a href="edit.php?id=<?=$cliente["id"]?> "class="btn btn-secondary mb-2">Editar contacto</a>
-                    <a href="delete.php?id=<?=$cliente["id"]?> " class="btn btn-danger mb-2">Eliminar contacto</a>
+                    <a href="edit.php?Rut=<?=$cliente["Rut"]?> "class="btn btn-secondary mb-2">Editar cliente</a>
+                    <a href="delete.php?Rut=<?=$cliente["Rut"]?> " class="btn btn-danger mb-2">Eliminar cliente</a>
                   </div>
                 </div>
               </div>  

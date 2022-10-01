@@ -4,20 +4,24 @@
     $error = null;
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-      if (empty($_POST["name"]) || empty($_POST["phone_number"])){
+      if (empty($_POST["nombre"]) || empty($_POST["apellido"]) || empty($_POST["auto"]) || empty($_POST["telefono"])){
         $error = "Por favor rellena todos los datos";
 
-      }else if(strlen($_POST["phone_number"])< 9){
-         $error = "Número de teléfono invalido.";
+      }else if(strlen($_POST["telefono"])< 9){
+         $error = "El numero de Teléfono debe contener al menos 9 carácteres";
 
       }else{
 
-        $name = $_POST["name"];
-        $phoneNumber = $_POST["phone_number"];
+        $nombre      = $_POST["nombre"];
+        $apellido    = $_POST["apellido"];
+        $auto        = $_POST["auto"];
+        $phoneNumber = $_POST["telefono"];
         
-        $statement = $conn->prepare("INSERT INTO contacts (name,phone_number) VALUES (:name, :phone_number)");
-        $statement->bindParam(":name", $_POST["name"]);
-        $statement->bindParam(":phone_number", $_POST["phone_number"]);
+        $statement = $conn->prepare("INSERT INTO info_cliente (nombre,apellido, 'auto',telefono) VALUES (:nombre,:apellido,:'auto', :telefono)");
+        $statement->bindParam(":nombre",   $_POST["nombre"]);
+        $statement->bindParam(":apellido", $_POST["apellido"]);
+        $statement->bindParam(":auto",     $_POST["auto"]);
+        $statement->bindParam(":telefono", $_POST["telefono"]);
         $statement->execute();
         
         header("Location: index.php");
@@ -32,7 +36,7 @@
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta nombre="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Bootstrap -->
     <link 
@@ -51,14 +55,14 @@
     <!-- Static Content -->
     <link rel="stylesheet"  href="./static/css/index.css" />
     
-    <title>Contacts App</title>
+    <title>Clinicar</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
           <a class="navbar-brand font-weight-bold" href="#">
             <img class="mr-2" src="./static/img/logo.png" />
-            ContactsApp
+            Clinicar
           </a>
           <button
             class="navbar-toggler"
@@ -88,7 +92,7 @@
           <div class="row justify-content-center">
             <div class="col-md-8">
               <div class="card">
-                <div class="card-header">Agrega un nuevo contacto</div>
+                <div class="card-header">Agrega un nuevo cliente</div>
                 <div class="card-body">
                   <?php if ($error) { ?>
                       <p class="text-danger">
@@ -98,18 +102,35 @@
                   <?php } ?>
                   <form method="POST" action="add.php">
                     <div class="mb-3 row">
-                      <label for="name" class="col-md-4 col-form-label text-md-end">Nombre</label>
+                      <label for="nombre" class="col-md-4 col-form-label text-md-end">Nombre</label>
         
                       <div class="col-md-6">
-                        <input id="name" type="text" class="form-control" name="name" required autocomplete="name" autofocus>
+                        <input id="nombre" type="text" class="form-control" id="nombre" placeholder = "Ingrese el Nombre" required autocomplete="nombre" autofocus>
                       </div>
                     </div>
-        
+
+
                     <div class="mb-3 row">
-                      <label for="phone_number" class="col-md-4 col-form-label text-md-end">Número de telefono</label>
+                      <label for="apellido" class="col-md-4 col-form-label text-md-end">Apellido</label>
+                      
+                      <div class="col-md-6">
+                        <input id="apellido" type="text" class="form-control" id="apellido"placeholder = "Ingrese el Apellido" required autocomplete="apellido" autofocus>
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3 row">
+                    <label for="nombre" class="col-md-4 col-form-label text-md-end">Auto</label>
+
+                    <div class="col-md-6">
+                        <input id="auto" type="text" class="form-control" id="auto" placeholder = "Ingrese el Modelo del Auto" required autocomplete="auto" autofocus>
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3 row">
+                      <label for="telefono" class="col-md-4 col-form-label text-md-end">Número de telefono</label>
         
                       <div class="col-md-6">
-                        <input id="phone_number" type="tel" class="form-control" name="phone_number" required autocomplete="phone_number" autofocus>
+                        <input id="telefono" type="tel" class="form-control" id="telefono" placeholder = "Ingrese el Numero de teléfono" required autocomplete="telefono" autofocus>
                       </div>
                     </div>
         

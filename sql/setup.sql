@@ -1,4 +1,4 @@
--- Active: 1664081338245@@127.0.0.1@3306@clinicar
+-- Active: 1664647068783@@127.0.0.1@3306@clinicar
 DROP DATABASE IF EXISTS clinicar;
 
 CREATE DATABASE clinicar;
