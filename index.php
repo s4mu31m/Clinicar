@@ -83,8 +83,8 @@ require "db.php";
                   <div class="card-body">
                     <h3 class="card-title text-capitalize"><?=$cliente["nombre"]?></h3>
                     <p class="m-2"><?=$cliente["telefono"]?></p>
-                    <a href="edit.php?id=<?=$cliente["id"]?> "class="btn btn-secondary mb-2">Editar contacto</a>
-                    <a href="delete.php?id=<?=$cliente["id"]?> " class="btn btn-danger mb-2">Eliminar contacto</a>
+                    <a href="edit.php?id=<?=$cliente["Rut"]?> "class="btn btn-secondary mb-2">Editar contacto</a>
+                    <a href="delete.php?id=<?=$cliente["Rut"]?> " class="btn btn-danger mb-2">Eliminar contacto</a>
                   </div>
                 </div>
               </div>  
