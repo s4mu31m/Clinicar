@@ -1,33 +1,33 @@
 <?php
 
   require "db.php";
-    $error = null;
+  $error = null;
 
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-      if (empty($_POST["Rut"]) || empty($_POST["nombre"]) || empty($_POST["auto"]) || empty($_POST["telefono"])){
-        $error = "Por favor rellena todos los datos";
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if (empty($_POST["rut"]) || empty($_POST["nombre"]) || empty($_POST["car"]) || empty($_POST["telefono"])){
+      $error = "Por favor rellena todos los datos";
+      
+    }else if(strlen($_POST["telefono"])< 9){
+      $error = "El numero de Teléfono debe contener al menos 9 carácteres";
 
-      }else if(strlen($_POST["telefono"])< 9){
-         $error = "El numero de Teléfono debe contener al menos 9 carácteres";
-
-      }else{
+    }else{
 
 
-        $rut      = $_POST["Rut"];
-        $nombre   = $_POST["nombre"];
-        $auto     = $_POST["auto"];
-        $telefono = $_POST["telefono"];
-        
-        $statement = $conn->prepare("INSERT INTO info_cliente (Rut, nombre,apellido, 'auto',telefono) VALUES (:Rut, :nombre,:apellido,:'auto', :telefono)");
-        $statement->bindParam(":nombre",   $_POST["Rut"]);
-        $statement->bindParam(":apellido", $_POST["nombre"]);
-        $statement->bindParam(":auto",     $_POST["auto"]);
-        $statement->bindParam(":telefono", $_POST["telefono"]);
-        $statement->execute();
-        
-        header("Location: index.php");
-      }
+      $rut      = $_POST["rut"];
+      $nombre   = $_POST["nombre"];
+      $car     = $_POST["car"];
+      $telefono = $_POST["telefono"];
+      
+      $statement = $conn->prepare("INSERT INTO info_cliente ('rut, nombre,apellido, car,telefono') VALUES (:rut, :nombre,:apellido,:car, :telefono)");
+      $statement->bindValue(":rut",      $_POST["rut"]);
+      $statement->bindValue(":nombre",   $_POST["nombre"]);
+      $statement->bindValue(":car",      $_POST["car"]);
+      $statement->bindValue(":telefono", $_POST["telefono"]);
+      $statement->execute();
+
+      header("Location: index.php");
     }
+  }
 ?>
 
 <!DOCTYPE html>
@@ -82,7 +82,7 @@
                 <a class="nav-link" href="./index.php">Inicio</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="./add.php">Agregar Contacto</a>
+                <a class="nav-link" href="./add.php">Agregar Cliente</a>
               </li>
             </ul>
           </div>
@@ -93,7 +93,7 @@
           <div class="row justify-content-center">
             <div class="col-md-8">
               <div class="card">
-                <div class="card-header">Agrega un nuevo cliente</div>
+                <div class="card-header">Agrega un nuevo Cliente</div>
                 <div class="card-body">
                   <?php if ($error) { ?>
                       <p class="text-danger">
@@ -103,25 +103,33 @@
                   <?php } ?>
                   <form method="POST" action="add.php">
                   <div class="mb-3 row">
-                      <label for="Rut" class="col-md-4 col-form-label text-md-end">RUT</label>
+                      <label for="rut" class="col-md-4 col-form-label text-md-end">RUT</label>
         
                       <div class="col-md-6">
-                        <input id="Rut" type="text" class="form-control" id="Rut" placeholder = "Ingrese el Rut" required autocomplete="Rut" autofocus>
+                        <input id="rut" type="text" class="form-control" name="rut" placeholder = "Ingrese el rut" required autocomplete="rut" autofocus>
                       </div>
                     </div>
                     <div class="mb-3 row">
                       <label for="nombre" class="col-md-4 col-form-label text-md-end">Nombre</label>
         
                       <div class="col-md-6">
-                        <input id="nombre" type="text" class="form-control" id="nombre" placeholder = "Ingrese el Nombre" required autocomplete="nombre" autofocus>
+                        <input id="nombre" type="text" class="form-control" name="nombre" placeholder = "Ingrese el Nombre" required autocomplete="nombre" autofocus>
                       </div>
                     </div>
                     
                     <div class="mb-3 row">
-                    <label for="auto" class="col-md-4 col-form-label text-md-end">Auto</label>
+                    <label for="car" class="col-md-4 col-form-label text-md-end">Auto</label>
 
                     <div class="col-md-6">
-                        <input id="auto" type="text" class="form-control" id="auto" placeholder = "Ingrese el Modelo del Auto" required autocomplete="auto" autofocus>
+                        <input id="car" type="text" class="form-control" name="car" placeholder = "Ingrese el Modelo del Auto" required autocomplete="car" autofocus>
+                      </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                    <label for="patente" class="col-md-4 col-form-label text-md-end">Patente</label>
+
+                    <div class="col-md-6">
+                        <input id="patente" type="text" class="form-control" name="patente" placeholder = "Ingrese la patente del Auto" required autocomplete="car" autofocus>
                       </div>
                     </div>
                     
@@ -129,7 +137,7 @@
                       <label for="telefono" class="col-md-4 col-form-label text-md-end">Número de telefono</label>
         
                       <div class="col-md-6">
-                        <input id="telefono" type="tel" class="form-control" id="telefono" placeholder = "Ingrese el Numero de teléfono" required autocomplete="telefono" autofocus>
+                        <input id="telefono" type="text" class="form-control" name="telefono" placeholder = "Ingrese el Numero de teléfono" required autocomplete="telefono" autofocus>
                       </div>
                     </div>
         

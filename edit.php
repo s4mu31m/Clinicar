@@ -2,18 +2,17 @@
 
   require "db.php";
 
-  $id = $_GET["Rut"];
+  $id = $_GET["rut"];
 
-  $statement = $conn->prepare("SELECT * FROM info_cliente WHERE Rut = :id LIMIT 1");
+  $statement = $conn->prepare("SELECT * FROM info_cliente WHERE rut = :id LIMIT 1");
   $statement->execute([":id" => $id]);
   
-  if($statement->rowCount()== 0){
-    http_response_code(404);
-    echo("HTTP 404 NOT FOUND");
-    return;
-  }
+
+
+
 
   $cliente = $statement->fetch(PDO ::FETCH_ASSOC);
+  $car = $statement->fetch(PDO ::FETCH_ASSOC);
 
   $error = null;
 
@@ -29,7 +28,7 @@
         $nombre = $_POST["nombre"];
         $telefono = $_POST["telefono"];
         
-        $statement = $conn->prepare("UPDATE info_cliente SET nombre = :nombre, telefono = :telefono WHERE Rut = :id ");
+        $statement = $conn->prepare("UPDATE info_cliente SET nombre = :nombre, telefono = :telefono WHERE rut = :id ");
         $statement->execute ([
           ":id" => $id,
           ":nombre"=> $_POST["nombre"],
@@ -66,14 +65,14 @@
     <!-- Static Content -->
     <link rel="stylesheet"  href="./static/css/index.css" />
     
-    <title>Contacts App</title>
+    <title>Clinicar</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
           <a class="navbar-brand font-weight-bold" href="#">
             <img class="mr-2" src="./static/img/logo.png" />
-            ContactsApp
+            Clinicar
           </a>
           <button
             class="navbar-toggler"
@@ -86,13 +85,13 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" Rut="navbarNav">
+          <div class="collapse navbar-collapse" rut="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="./index.php">Inicio</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="./add.php">Agregar Contacto</a>
+                <a class="nav-link" href="./add.php">Agregar Cliente</a>
               </li>
             </ul>
           </div>
@@ -103,39 +102,54 @@
           <div class="row justify-content-center">
             <div class="col-md-8">
               <div class="card">
-                <div class="card-header">Agrega un nuevo contacto</div>
+                <div class="card-header">Editar Cliente existente</div>
                 <div class="card-body">
                   <?php if ($error) { ?>
                       <p class="text-danger">
                       <?= $error ?>
                       </p>
                   <?php } ?>
-                  <form method="POST" action="edit.php?Rut= <?= $cliente["Rut"]?>">
+                  <form method="POST" action="edit.php?rut= <?= $cliente["rut"]?>">
                     <div class="mb-3 row">
-                      <label for="nombre" class="col-md-4 col-form-label text-md-end">Nombre</label>
-        
-                      <div class="col-md-6">
-                        <input value="<?= $cliente["nombre"]?>" Rut="nombre" type="text" class="form-control" nombre="nombre" required autocomplete="nombre" autofocus>
+                        <label for="rut" class="col-md-4 col-form-label text-md-end">RUT</label>
+          
+                        <div class="col-md-6">
+                          <input Value="<?=$cliente["rut"] ?>" id="rut" type="text" class="form-control" name="rut" placeholder = "Ingrese el rut" required autocomplete="rut" autofocus>
+                        </div>
                       </div>
-                    </div>
+                      <div class="mb-3 row">
+                        <label for="nombre" class="col-md-4 col-form-label text-md-end">Nombre</label>
+          
+                        <div class="col-md-6">
+                          <input Value="<?=$cliente["nombre"] ?>" id="nombre" type="text" class="form-control" name="nombre" placeholder = "Ingrese el Nombre" required autocomplete="nombre" autofocus>
+                        </div>
+                      </div>
+                      
+                      <div class="mb-3 row">
+                      <label for="car" class="col-md-4 col-form-label text-md-end">Auto</label>
 
-                    <div class="mb-3 row">
-                      <label for="nombre" class="col-md-4 col-form-label text-md-end">Auto</label>
-        
                       <div class="col-md-6">
-                        <input value="<?= $cliente["auto"]?>" Rut="auto" type="text" class="form-control" nombre="auto" required autocomplete="nombre" autofocus>
+                          <input Value="<?=$cliente["car"] ?>"id="car" type="text" class="form-control" name="car" placeholder = "Ingrese el Modelo del Auto" required autocomplete="car" autofocus>
+                        </div>
                       </div>
-                    </div>
-        
-                    <div class="mb-3 row">
-                      <label for="telefono" class="col-md-4 col-form-label text-md-end">Número de telefono</label>
-        
+
+                      <div class="mb-3 row">
+                      <label for="patente" class="col-md-4 col-form-label text-md-end">Patente</label>
+
                       <div class="col-md-6">
-                        <input value="<?= $cliente["telefono"]?>" Rut="telefono" type="tel" class="form-control" nombre="telefono" required autocomplete="telefono" autofocus>
+                          <input Value="<?=$car["patente"] ?>"id="patente" type="text" class="form-control" name="patente" placeholder = "Ingrese la patente del Auto" required autocomplete="car" autofocus>
+                        </div>
                       </div>
-                    </div>
-        
-                    <div class="mb-3 row">
+                      
+                      <div class="mb-3 row">
+                        <label for="telefono" class="col-md-4 col-form-label text-md-end">Número de telefono</label>
+          
+                        <div class="col-md-6">
+                          <input Value="<?=$cliente["telefono"] ?>"id="telefono" type="text" class="form-control" name="telefono" placeholder = "Ingrese el Numero de teléfono" required autocomplete="telefono" autofocus>
+                        </div>
+                      </div>
+          
+                      <div class="mb-3 row">
                       <div class="col-md-6 offset-md-4">
                         <button type="submit" class="btn btn-primary">Guardar</button>
                       </div>
