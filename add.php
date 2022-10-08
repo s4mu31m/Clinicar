@@ -4,13 +4,16 @@
   $error = null;
 
   if($_SERVER["REQUEST_METHOD"] == "POST"){
+
     if (empty($_POST["rut"]) || empty($_POST["nombre"]) ||  empty($_POST["telefono"])){
+
       $error = "Por favor rellena todos los datos";
       
     }else if(strlen($_POST["telefono"])< 9){
       $error = "El numero de Teléfono debe contener al menos 9 carácteres";
 
     }else{
+
 
       $rut      = $_POST["rut"];
       $nombre   = $_POST["nombre"];
@@ -25,10 +28,12 @@
       $statement->execute();
 
       
+
       header("Location: index.php");
     }
   }
 ?>
+
 
 <?php require "partials/header.php"?>
 
@@ -50,6 +55,7 @@
 
               <div class="col-md-6">
                 <input id="rut" type="text" class="form-control" name="rut" placeholder = "Ingrese el rut" required autocomplete="rut" autofocus>
+
               </div>
             </div>
             <div class="mb-3 row">

@@ -1,4 +1,6 @@
+
 -- Active: 1664647068783@@127.0.0.1@3306@clinicar
+
 DROP DATABASE IF EXISTS clinicar;
 
 CREATE DATABASE clinicar;
@@ -21,7 +23,9 @@ CREATE TABLE  agendamiento (
   KEY `Hora_Agen` (`Hora_Agen`),
   CONSTRAINT `Fk_Cliente_asoc` FOREIGN KEY (`Cliente_Agen`) REFERENCES `info_cliente` (`rut`),
   CONSTRAINT `Fk_Fecha_Serv` FOREIGN KEY (`Hora_Agen`) REFERENCES `servicio_info` (`Fecha_Servicio`),
+
   CONSTRAINT `Fk_Patente_Due` FOREIGN KEY (`Patente_Auto`) REFERENCES `car` (`patente`),
+
   CONSTRAINT `Fk_Tipo_Serv` FOREIGN KEY (`Tipo_Servicio`) REFERENCES `servicio_info` (`Tipo_Servicio`)
 );
 
@@ -31,6 +35,7 @@ INSERT INTO `agendamiento` VALUES ('DB-J5-99','Pascual Peralta','2022-10-22 00:0
 DROP TABLE IF EXISTS `car`;
 
 CREATE TABLE `car` (
+
   `patente` varchar(10) NOT NULL,
   `Año` int DEFAULT NULL,
   `Aceite` varchar(15) DEFAULT NULL,
@@ -49,7 +54,10 @@ CREATE TABLE `car` (
 
 
 
+
+
 INSERT INTO `car` VALUES ('DB-J5-99',2021,'5W30','8L','Rojo','F-150','3,0','Bencina','Ford','C-26035/1','PF950/12');
+
 
 
 
@@ -59,6 +67,7 @@ DROP TABLE IF EXISTS `info_cliente`;
 CREATE TABLE `info_cliente` (
   `rut` varchar(20) NOT NULL,
   `nombre` char(20) DEFAULT NULL,
+
   `patente` varchar(30) DEFAULT NULL,
   `telefono` varchar(12) DEFAULT NULL,
   PRIMARY KEY (`rut`),
@@ -102,6 +111,7 @@ CREATE TABLE `servicio_info` (
   KEY `Cliente_Asoc` (`Cliente_Asoc`),
   KEY `Fecha_Servicio` (`Fecha_Servicio`),
   KEY `Empleado_Asocc_idx` (`Empleado_Asoc`),
+
   CONSTRAINT `Auto_asoccc` FOREIGN KEY (`Auto_Asoc`) REFERENCES `car` (`patente`),
   CONSTRAINT `Cliente_Asoc` FOREIGN KEY (`Cliente_Asoc`) REFERENCES `info_cliente` (`rut`),
   CONSTRAINT `Empleado_ASOCC` FOREIGN KEY (`Empleado_Asoc`) REFERENCES `info_empleado` (`nombre`)

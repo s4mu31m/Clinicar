@@ -8,6 +8,7 @@
   $statement->execute([":id" => $id]);
   
 
+
   $cliente = $statement->fetch(PDO ::FETCH_ASSOC);
 
   $error = null;
@@ -19,7 +20,9 @@
     }else if(strlen($_POST["telefono"])< 9){
       $error = "El numero de Teléfono debe contener al menos 9 carácteres";
 
+
     }else{
+
 
 
       $nombre   = $_POST["nombre"];
@@ -30,6 +33,7 @@
         $statement->bindParam(":telefono", $_POST["telefono"]);
         $statement->execute ();
         header("Location: home.php");
+
       }
     }
 ?>
@@ -62,6 +66,7 @@
 
               <div class="col-md-6">
                 <input value="<?= $cliente["telefono"]?>" rut="telefono" type="tel" class="form-control" name="telefono" required autocomplete="telefono" autofocus>
+
               </div>
             </div>
 
