@@ -1,4 +1,7 @@
 # Clinicar
-Este Proyecto lo hice con un curso online de PHP y MySql, en este caso apenas empece a modificar en index.php para poder adaptarlo a lo que necesitamos
-al empezar a probar si funcionaba, los botones de editar y eliminar que estan en la linea 86 y 87 de index.php, no se ven como tal y solo se ven como un "link"
+Este Proyecto es parte de un trabajo del modulo de Base de datos, 
+donde proveemos un software de registro de usuarios a una empresa de mantención de vehiculos y limpieza de estos
 
+se utilizó php y html para hacerlo facil de portar a una pagina web privada donde los trabajadores puedan  ingresar datos sin necesidad de un unico PC
+
+aún no está completa y flatan actualizaciones
