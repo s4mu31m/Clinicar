@@ -1,9 +1,7 @@
 <?php
 
 require "db.php";
-  $clientes = $conn->query("SELECT * FROM info_cliente");
-
-  $car  = $conn->query("SELECT * FROM car");
+  $clientes = $conn->query("SELECT * FROM car");
 ?>
 
 <?php require "partials/header.php"?>
@@ -11,7 +9,6 @@ require "db.php";
 <div class="container pt-4 p-3" >
   <div class="row">
     
-
 
     <?php if ($clientes->rowCount() === 0){ ?>
       <div class="col-md-4 mx-car">
@@ -30,13 +27,12 @@ require "db.php";
             <a href="edit.php?rut=<?=$cliente["rut"]?> "class="btn btn-secondary mb-2">Editar cliente</a>
             <a href="#?rut=<?=$cliente["rut"]?> "class="btn btn-secondary mb-2">Ver mas informacion</a>
             <a href="delete.php?rut=<?=$cliente["rut"]?> " class="btn btn-danger mb-2">Eliminar cliente</a>
-
           </div>
         </div>
       </div>  
     <?php }?> 
 
-
   </div>  
 </div>
+
 <?php require "partials/footer.php"?>
