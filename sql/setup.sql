@@ -1,4 +1,4 @@
--- Active: 1664661202163@@127.0.0.1@3306@clinicar
+-- Active: 1664647068783@@127.0.0.1@3306@clinicar
 DROP DATABASE IF EXISTS clinicar;
 
 CREATE DATABASE clinicar;
@@ -62,8 +62,7 @@ CREATE TABLE `info_cliente` (
   `patente` varchar(30) DEFAULT NULL,
   `telefono` varchar(12) DEFAULT NULL,
   PRIMARY KEY (`rut`),
-  KEY `rut` (`rut`),
-  CONSTRAINT `Fk_Info_Cliente_` FOREIGN KEY (`rut`) REFERENCES `car` (`patente`)
+  KEY `rut` (`rut`)
 );
 
 INSERT INTO `info_cliente` VALUES ('27169879-8','César Linares','Chevrolet Spark',936936243),('27169879-K','Samuel Montiel','Audi A8',936936224),('6289643-0','Pascual Peralta','Ford F-150',936936242);

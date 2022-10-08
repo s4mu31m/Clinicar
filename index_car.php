@@ -1,8 +1,7 @@
 <?php
 
 require "db.php";
-  $clientes = $conn->query("SELECT * FROM info_cliente");
-  $car  = $conn->query("SELECT * FROM car");
+  $clientes = $conn->query("SELECT * FROM car");
 ?>
 
 <?php require "partials/header.php"?>
