@@ -2,9 +2,9 @@
 
 require "db.php";
 
-$id = $_GET["id"];
+$id = $_GET["Rut"];
 
-$statement = $conn->prepare("SELECT * FROM contacts WHERE id = :id");
+$statement = $conn->prepare("SELECT * FROM info_cliente WHERE Rut = :id");
 $statement->execute([":id" => $id]);
 
 if($statement->rowCount()== 0){
@@ -13,6 +13,6 @@ if($statement->rowCount()== 0){
   return;
 }
 
-$conn->prepare("DELETE FROM contacts WHERE id = :id")->execute([":id" => $id]);
+$conn->prepare("DELETE FROM info_cliente WHERE Rut = :id")->execute([":id" => $id]);
 
 header("Location: index.php");
