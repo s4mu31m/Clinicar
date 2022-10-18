@@ -1,164 +1,103 @@
-<<<<<<< HEAD
 -- Active: 1664647068783@@127.0.0.1@3306@clinicar
-=======
--- Active: 1664661202163@@127.0.0.1@3306@clinicar
->>>>>>> develop
-DROP DATABASE IF EXISTS clinicar;
 
-CREATE DATABASE clinicar;
+CREATE DATABASE IF NOT EXISTS `clinicar` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `clinicar`;
 
-USE clinicar;
-
-DROP TABLE IF EXISTS agendamiento;
 
 SET FOREIGN_KEY_CHECKS=0;
 
-CREATE TABLE  agendamiento (
-  `Patente_Auto` varchar(10) NOT NULL,
-  `Cliente_Agen` varchar(20) DEFAULT NULL,
-  `Hora_Agen` datetime DEFAULT NULL,
-  `Tipo_Servicio` char(25) DEFAULT NULL,
-  PRIMARY KEY (`Patente_Auto`),
-  KEY `Tipo_Servicio` (`Tipo_Servicio`),
-  KEY `Patente_Auto` (`Patente_Auto`),
-  KEY `Cliente_Agen` (`Cliente_Agen`),
-  KEY `Hora_Agen` (`Hora_Agen`),
-  CONSTRAINT `Fk_Cliente_asoc` FOREIGN KEY (`Cliente_Agen`) REFERENCES `info_cliente` (`rut`),
-  CONSTRAINT `Fk_Fecha_Serv` FOREIGN KEY (`Hora_Agen`) REFERENCES `servicio_info` (`Fecha_Servicio`),
-<<<<<<< HEAD
-  CONSTRAINT `Fk_Patente_Due` FOREIGN KEY (`Patente_Auto`) REFERENCES `car` (`patente`),
-=======
-  CONSTRAINT `Fk_Patente_Due` FOREIGN KEY (`Patente_Auto`) REFERENCES `car` (`Patente`),
->>>>>>> develop
-  CONSTRAINT `Fk_Tipo_Serv` FOREIGN KEY (`Tipo_Servicio`) REFERENCES `servicio_info` (`Tipo_Servicio`)
-);
-
-
-INSERT INTO `agendamiento` VALUES ('DB-J5-99','Pascual Peralta','2022-10-22 00:00:00','Lavado Chasis');
-
-DROP TABLE IF EXISTS `car`;
-
-CREATE TABLE `car` (
-<<<<<<< HEAD
-  `patente` varchar(10) NOT NULL,
-=======
-  `Patente` varchar(10) NOT NULL,
->>>>>>> develop
-  `Año` int DEFAULT NULL,
-  `Aceite` varchar(15) DEFAULT NULL,
-  `Vol_Aceite` varchar(6) DEFAULT NULL,
-  `Color` char(10) DEFAULT NULL,
-  `Modelo` varchar(15) DEFAULT NULL,
-  `Motor` varchar(5) DEFAULT NULL,
-  `Combustible` char(10) DEFAULT NULL,
-  `Marca` varchar(15) DEFAULT NULL,
-  `Filtro_Aire` varchar(12) DEFAULT NULL,
-  `Filtro_Aceite` varchar(12) DEFAULT NULL,
-  PRIMARY KEY (`patente`),
-  KEY `patente` (`patente`),
-  CONSTRAINT `Fk_Dueño_Auto` FOREIGN KEY (`patente`) REFERENCES `cliente` (`rut`)
-);
-
-
-<<<<<<< HEAD
-=======
-LOCK TABLES `car` WRITE;
->>>>>>> develop
-
-INSERT INTO `car` VALUES ('DB-J5-99',2021,'5W30','8L','Rojo','F-150','3,0','Bencina','Ford','C-26035/1','PF950/12');
+DROP TABLE IF EXISTS `agendamiento`;
+CREATE TABLE IF NOT EXISTS `agendamiento` (
+  `patente_auto` varchar(10) NOT NULL,
+  `patente_agen` varchar(20) DEFAULT NULL,
+  `hora_agen` datetime DEFAULT NULL,
+  `tipo_servicio` char(25) DEFAULT NULL,
+  PRIMARY KEY (`patente_auto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
-<<<<<<< HEAD
-=======
-CREATE TABLE `cliente` (
-  `Rut` varchar(20) NOT NULL,
-  PRIMARY KEY (`Rut`),
-  KEY `Rut` (`Rut`),
-  CONSTRAINT `Fk_Auto_Dueño` FOREIGN KEY (`Rut`) REFERENCES `info_cliente` (`Rut`),
-  CONSTRAINT `Fk_Auto_Prop` FOREIGN KEY (`Rut`) REFERENCES `car` (`Patente`),
-  CONSTRAINT `Fk_Info_Cliente` FOREIGN KEY (`Rut`) REFERENCES `info_cliente` (`Rut`)
-);
+INSERT INTO `agendamiento` (`patente_auto`, `patente_agen`, `hora_agen`, `tipo_servicio`) VALUES
+('G4-SD-41', NULL, '2022-10-15 16:30:00', 'Lavado Completo');
 
 
-
-DROP TABLE IF EXISTS `empleado`;
-
-CREATE TABLE `empleado` (
-  `Cod_Empleado` int DEFAULT NULL,
-  KEY `Cod_Empleado` (`Cod_Empleado`),
-  CONSTRAINT `Cod_Fk_Empleado` FOREIGN KEY (`Cod_Empleado`) REFERENCES `info_empleado` (`Cod_Empleado`),
-  CONSTRAINT `Empleado_Serv` FOREIGN KEY (`Cod_Empleado`) REFERENCES `servicio` (`N_Servicio`)
-);
-
-
->>>>>>> develop
 
 DROP TABLE IF EXISTS `info_cliente`;
-
 CREATE TABLE `info_cliente` (
   `rut` varchar(20) NOT NULL,
   `nombre` char(20) DEFAULT NULL,
-<<<<<<< HEAD
   `patente` varchar(30) DEFAULT NULL,
   `telefono` varchar(12) DEFAULT NULL,
   PRIMARY KEY (`rut`),
   KEY `rut` (`rut`)
-=======
-  `car` varchar(30) DEFAULT NULL,
-  `telefono` varchar(12) DEFAULT NULL,
-  PRIMARY KEY (`Rut`),
-  KEY `Rut` (`Rut`),
-  CONSTRAINT `Fk_Info_Cliente_` FOREIGN KEY (`Rut`) REFERENCES `car` (`Patente`)
->>>>>>> develop
 );
 
-INSERT INTO `info_cliente` VALUES ('27169879-8','César Linares','Chevrolet Spark',936936243),('27169879-K','Samuel Montiel','Audi A8',936936224),('6289643-0','Pascual Peralta','Ford F-150',936936242);
+
+INSERT INTO `info_cliente` (`rut`, `nombre`, `patente`, `telefono`) VALUES
+('21190811-4', 'IVANA INFANTE', 'G4-SD-41', 931083927);
 
 
 DROP TABLE IF EXISTS `info_empleado`;
-
-CREATE TABLE `info_empleado` (
-  `Cod_Empleado` int DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `info_empleado` (
+  `cod_empleado` int(11) NOT NULL,
   `nombre` char(10) DEFAULT NULL,
-  KEY `Cod_Empleado` (`Cod_Empleado`),
-  KEY `nombre` (`nombre`),
-  CONSTRAINT `Fk_EmpleadoCOd_` FOREIGN KEY (`Cod_Empleado`) REFERENCES `empleado` (`Cod_Empleado`)
+  `apellido` char(10) DEFAULT NULL,
+  PRIMARY KEY (`cod_empleado`)
 );
 
-DROP TABLE IF EXISTS `servicio`;
-
-CREATE TABLE `servicio` (
-  `N_Servicio` int DEFAULT NULL,
-  KEY `N_Servicio` (`N_Servicio`),
-  CONSTRAINT `Ser_FK` FOREIGN KEY (`N_Servicio`) REFERENCES `servicio_info` (`N_Servicio`)
-);
+INSERT INTO `info_empleado` (`cod_empleado`, `nombre`, `apellido`) VALUES
+(1, 'Brandon', 'Lopez');
 
 
 DROP TABLE IF EXISTS `servicio_info`;
-
-CREATE TABLE `servicio_info` (
-  `N_Servicio` int DEFAULT NULL,
-  `Tipo_Servicio` char(25) DEFAULT NULL,
-  `Auto_Asoc` varchar(30) DEFAULT NULL,
-  `Cliente_Asoc` varchar(20) DEFAULT NULL,
-  `Empleado_Asoc` char(20) DEFAULT NULL,
-  `Fecha_Servicio` datetime DEFAULT NULL,
-  KEY `N_Servicio` (`N_Servicio`),
-  KEY `Tipo_Servicio` (`Tipo_Servicio`),
-  KEY `Auto_Asoc` (`Auto_Asoc`),
-  KEY `Cliente_Asoc` (`Cliente_Asoc`),
-  KEY `Fecha_Servicio` (`Fecha_Servicio`),
-  KEY `Empleado_Asocc_idx` (`Empleado_Asoc`),
-<<<<<<< HEAD
-  CONSTRAINT `Auto_asoccc` FOREIGN KEY (`Auto_Asoc`) REFERENCES `car` (`patente`),
-  CONSTRAINT `Cliente_Asoc` FOREIGN KEY (`Cliente_Asoc`) REFERENCES `info_cliente` (`rut`),
-=======
-  CONSTRAINT `Auto_asoccc` FOREIGN KEY (`Auto_Asoc`) REFERENCES `car` (`Patente`),
-  CONSTRAINT `Cliente_Asoc` FOREIGN KEY (`Cliente_Asoc`) REFERENCES `info_cliente` (`Rut`),
->>>>>>> develop
-  CONSTRAINT `Empleado_ASOCC` FOREIGN KEY (`Empleado_Asoc`) REFERENCES `info_empleado` (`nombre`)
+CREATE TABLE IF NOT EXISTS `servicio_info` (
+  `n_servicio` int(11) NOT NULL,
+  `tipo_servicio` varchar(30) DEFAULT NULL,
+  `auto_asoc` varchar(30) DEFAULT NULL,
+  `patente_asoc` varchar(20) DEFAULT NULL,
+  `empleado_asoc` varchar(20) DEFAULT NULL,
+  `fecha_servicio` datetime DEFAULT NULL,
+  PRIMARY KEY (`n_servicio`),
+  KEY `patente_asoc` (`patente_asoc`),
+  KEY `tipo_servicio` (`tipo_servicio`)
 );
+
+INSERT INTO `servicio_info` (`n_servicio`, `tipo_servicio`, `auto_asoc`, `patente_asoc`, `empleado_asoc`, `fecha_servicio`) VALUES
+(1, 'Lavado Completo', NULL, 'G4-5D-41', 'BRANDO LOPEZ', '2022-10-08 00:00:00');
+
+
+DROP TABLE IF EXISTS `vehiculo`;
+CREATE TABLE IF NOT EXISTS `vehiculo` (
+  `patente` varchar(10) NOT NULL,
+  `año` int(11) DEFAULT NULL,
+  `aceite` varchar(15) DEFAULT NULL,
+  `vol_aceite` varchar(6) DEFAULT NULL,
+  `color` char(10) DEFAULT NULL,
+  `modelo` varchar(15) DEFAULT NULL,
+  `motor` varchar(5) DEFAULT NULL,
+  `combustible` char(10) DEFAULT NULL,
+  `marca` varchar(15) DEFAULT NULL,
+  `filtro_aceite` varchar(12) DEFAULT NULL,
+  `filtro_aire` varchar(12) DEFAULT NULL,
+  PRIMARY KEY (`patente`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+INSERT INTO `vehiculo` (`patente`, `año`, `aceite`, `vol_aceite`, `color`, `modelo`, `motor`, `combustible`, `marca`, `filtro_aceite`, `filtro_aire`) VALUES
+('G4-SD-41', 2017, NULL, NULL, 'GRIS', 'COROLLA', '3,0', 'BENCINA', 'TOYOTA', NULL, NULL);
+
+ALTER TABLE `info_cliente`
+  ADD CONSTRAINT `FK_AUTO_DUEÑO` FOREIGN KEY (`rut`) REFERENCES `vehiculo` (`patente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `patente_fk_dueño` FOREIGN KEY (`patente`) REFERENCES `vehiculo` (`patente`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `servicio_info`
+  ADD CONSTRAINT `fk_ser_au` FOREIGN KEY (`patente_asoc`) REFERENCES `vehiculo` (`patente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_ser_empl` FOREIGN KEY (`n_servicio`) REFERENCES `info_empleado` (`cod_empleado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_sercliente` FOREIGN KEY (`tipo_servicio`) REFERENCES `info_cliente` (`rut`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `vehiculo`
+  ADD CONSTRAINT `fk_auto_cliente_E` FOREIGN KEY (`patente`) REFERENCES `info_cliente` (`rut`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 
 
 
