@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `agendamiento` (
   `hora_agen` datetime DEFAULT NULL,
   `tipo_servicio` char(25) DEFAULT NULL,
   PRIMARY KEY (`patente_auto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 
 
 
@@ -24,17 +24,15 @@ INSERT INTO `agendamiento` (`patente_auto`, `patente_agen`, `hora_agen`, `tipo_s
 
 DROP TABLE IF EXISTS `info_cliente`;
 CREATE TABLE `info_cliente` (
+  id INT AUTO_INCREMENT PRIMARY KEY,
   `rut` varchar(20) NOT NULL,
   `nombre` char(20) DEFAULT NULL,
-  `patente` varchar(30) DEFAULT NULL,
-  `telefono` varchar(12) DEFAULT NULL,
-  PRIMARY KEY (`rut`),
-  KEY `rut` (`rut`)
+  `telefono` varchar(12) DEFAULT NULL
 );
 
 
-INSERT INTO `info_cliente` (`rut`, `nombre`, `patente`, `telefono`) VALUES
-('21190811-4', 'IVANA INFANTE', 'G4-SD-41', 931083927);
+INSERT INTO `info_cliente` (`rut`, `nombre`, `telefono`) VALUES
+('21190811-4', 'IVANA INFANTE', 931083927);
 
 
 DROP TABLE IF EXISTS `info_empleado`;
@@ -68,6 +66,7 @@ INSERT INTO `servicio_info` (`n_servicio`, `tipo_servicio`, `auto_asoc`, `patent
 
 DROP TABLE IF EXISTS `vehiculo`;
 CREATE TABLE IF NOT EXISTS `vehiculo` (
+  user_id INT NOT NULL,
   `patente` varchar(10) NOT NULL,
   `año` int(11) DEFAULT NULL,
   `aceite` varchar(15) DEFAULT NULL,
@@ -79,24 +78,14 @@ CREATE TABLE IF NOT EXISTS `vehiculo` (
   `marca` varchar(15) DEFAULT NULL,
   `filtro_aceite` varchar(12) DEFAULT NULL,
   `filtro_aire` varchar(12) DEFAULT NULL,
-  PRIMARY KEY (`patente`)
+  PRIMARY KEY (`patente`),
+  FOREIGN KEY (user_id) REFERENCES info_cliente(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-INSERT INTO `vehiculo` (`patente`, `año`, `aceite`, `vol_aceite`, `color`, `modelo`, `motor`, `combustible`, `marca`, `filtro_aceite`, `filtro_aire`) VALUES
-('G4-SD-41', 2017, NULL, NULL, 'GRIS', 'COROLLA', '3,0', 'BENCINA', 'TOYOTA', NULL, NULL);
+INSERT INTO `vehiculo` (user_id,`patente`, `año`, `aceite`, `vol_aceite`, `color`, `modelo`, `motor`, `combustible`, `marca`, `filtro_aceite`, `filtro_aire`) VALUES
+(1,'G4-SD-41', 2017, NULL, NULL, 'GRIS', 'COROLLA', '3,0', 'BENCINA', 'TOYOTA', NULL, NULL);
 
-ALTER TABLE `info_cliente`
-  ADD CONSTRAINT `FK_AUTO_DUEÑO` FOREIGN KEY (`rut`) REFERENCES `vehiculo` (`patente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `patente_fk_dueño` FOREIGN KEY (`patente`) REFERENCES `vehiculo` (`patente`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-ALTER TABLE `servicio_info`
-  ADD CONSTRAINT `fk_ser_au` FOREIGN KEY (`patente_asoc`) REFERENCES `vehiculo` (`patente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_ser_empl` FOREIGN KEY (`n_servicio`) REFERENCES `info_empleado` (`cod_empleado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_sercliente` FOREIGN KEY (`tipo_servicio`) REFERENCES `info_cliente` (`rut`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-ALTER TABLE `vehiculo`
-  ADD CONSTRAINT `fk_auto_cliente_E` FOREIGN KEY (`patente`) REFERENCES `info_cliente` (`rut`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 
 

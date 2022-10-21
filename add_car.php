@@ -1,8 +1,18 @@
 <?php
 
   require "db.php";
-  $error = null;
 
+  session_start();
+  var_dump($_SESSION['user']);
+  die();
+
+
+  if (!isset($_SESSION["user"])) {
+    header("Location: index.php");
+    return;
+  }
+  $error = null;
+  
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     if (empty($_POST["patente"])){
       $error = "Por favor rellena la patente";
@@ -11,32 +21,23 @@
       $error = "La patente debe tener al menos 6 dígitos";
 
     }else{
+      var_dump($_SESSION['user']);
+      $conn
+        ->prepare("INSERT INTO vehiculo (user_id, patente, año, aceite, vol_aceite, color, modelo, motor, combustible, marca, filtro_aceite, filtro_aire) VALUES (user_id, :patente, :año, :aceite, :vol_aceite, :color, :modelo, :motor, :combustible, :marca, :filtro_aceite, :filtro_aire)")
+        ->execute([
+          ":patente" => $_POST["patente"],
+          ":año" => $_POST["año"],
+          ":vol_aceite" => $_POST["vol_aceite"],
+          ":color" => $_POST["color"],
+          ":modelo" => $_POST["modelo"],
+          ":motor" => $_POST["motor"],
+          ":combustible" => $_POST["combustible"],
+          ":marca" => $_POST["marca"],
+          ":filtro_aceite" => $_POST["filtro_aceite"],
+          ":filtro_aire" => $_POST["filtro_aire"],
+        ]);
 
-      $patente       = $_POST["patente"];
-      $año           = $_POST["año"];
-      $aceite        = $_POST["aceite"];
-      $vol_aceite    = $_POST["vol_aceite"];
-      $color         = $_POST["color"];
-      $modelo        = $_POST["modelo"];
-      $motor         = $_POST["motor"];
-      $combustible   = $_POST["combustible"];
-      $marca         = $_POST["marca"];
-      $filtro_aceite = $_POST["filtro_aceite"];
-      $filtro_aire   = $_POST["filtro_aire"];
-      
-      $statement = $conn->prepare("INSERT INTO `vehiculo` (`patente`, `año`, `aceite`, `vol_aceite`, `color`, `modelo`, `motor`, `combustible`, `marca`, `filtro_aceite`, `filtro_aire`) VALUES (:patente, :año, :aceite, :vol_aceite, :color, :modelo, :motor, :combustile, :marca, :filtro_aceite, :filtro_aire";
-      $statement->bindParam(":patente",       $_POST["patente"]);
-      $statement->bindParam(":año",           $_POST["año"]);
-      $statement->bindParam(":aceite",        $_POST["aceite"]);
-      $statement->bindParam(":vol_aceite",    $_POST["vol_aceite"]);
-      $statement->bindParam(":color",         $_POST["color"]);
-      $statement->bindParam(":modelo",        $_POST["modelo"]);
-      $statement->bindParam(":motor",         $_POST["motor"]);
-      $statement->bindParam(":combustible",   $_POST["combustible"]);
-      $statement->bindParam(":marca",         $_POST["marca"]);
-      $statement->bindParam(":filtro_aceite", $_POST["filtro_aceite"]);
-      $statement->bindParam(":filtro_aire",   $_POST["filtro_aire"]);
-      $statement->execute();
+      $_SESSION["flash"] = ["message" => "Vehiculo {$_POST['patente']} agregado correctamente!"];
 
       
       header("Location: index.php");
