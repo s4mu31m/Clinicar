@@ -1,22 +1,35 @@
 <?php
 
-require "db.php";
+require "database.php";
 
+session_start();
 
-$id = $_GET["rut"];
+if (!isset($_SESSION["user"])) {
+  header("Location: login.php");
+  return;
+}
 
-$statement = $conn->prepare("SELECT * FROM info_cliente WHERE rut = :id");
+$patente = $_GET["id"];
 
-$statement->execute([":id" => $id]);
+$statement = $conn->prepare("SELECT * FROM vehiculo WHERE patente = :patente LIMIT 1");
+$statement->execute([":patente" => $patente]);
 
-if($statement->rowCount()== 0){
+if ($statement->rowCount() == 0) {
   http_response_code(404);
   echo("HTTP 404 NOT FOUND");
   return;
 }
 
+$contact = $statement->fetch(PDO::FETCH_ASSOC);
 
-$conn->prepare("DELETE FROM info_cliente WHERE rut = :id")->execute([":id" => $id]);
+if ($contact["user_id"] !== $_SESSION["user"]["id"]) {
+  http_response_code(403);
+  echo("HTTP 403 UNAUTHORIZED");
+  return;
+}
 
+$conn->prepare("DELETE FROM vehiculo WHERE patente = :patente")->execute([":patente" => $patente]);
 
-header("Location: index.php");
+$_SESSION["flash"] = ["message" => "Contact {$contact['name']} deleted."];
+
+header("Location: home.php");

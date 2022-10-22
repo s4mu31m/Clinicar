@@ -2,9 +2,8 @@
     width: 1.2rem;
 }
 
-body {
-    height:665px;
-    background-image: url('/Clinicar/static/img/background.jpg');
+.welcome {
+    background: url('/contacts-app/static/img/background.jpg');
     background-position: center center;
     background-size: cover;
 }
