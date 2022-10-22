@@ -1,92 +1,156 @@
 <?php
 
-  require "db.php";
+  require "database.php";
+
+  session_start();
+
+  if (!isset($_SESSION["user"])) {
+    header("Location: login.php");
+    return;
+  }
+
   $error = null;
 
-  if($_SERVER["REQUEST_METHOD"] == "POST"){
-    if (empty($_POST["rut"]) || empty($_POST["nombre"]) ||  empty($_POST["telefono"])){
-      $error = "Por favor rellena todos los datos";
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (empty($_POST["patente"])) {
+      $error = "Favor ingresa una patente";
+    }else {
       
-    }else if(strlen($_POST["telefono"])< 9){
-      $error = "El numero de Teléfono debe contener al menos 9 carácteres";
-    }else{
-      $statement = $conn->prepare("SELECT * FROM info_cliente WHERE rut = :rut");
-      $statement->bindParam(":rut", $_POST["rut"]);
-      $statement->execute();
+      $statement = $conn->prepare("INSERT INTO vehiculo (user_id,patente, marca, modelo, year, aceite, vol_aceite, color, motor, combustible, filtro_aceite, filtro_aire) VALUES ({$_SESSION['user']['id']}, :patente, :marca, :modelo, :year, :aceite, :vol_aceite, :color, :motor, :combustible, :filtro_aceite, :filtro_aire)")
+      ->execute([
+        ":patente"       => $_POST["patente"],
+        ":marca"         => $_POST["marca"],
+        ":modelo"        => $_POST["modelo"],
+        ":year"          => $_POST["year"],
+        ":aceite"        => $_POST["aceite"],
+        ":vol_aceite"    => $_POST["vol_aceite"],
+        ":color"         => $_POST["color"],
+        ":motor"         => $_POST["motor"],
+        ":combustible"   => $_POST["combustible"],
+        ":filtro_aceite" => $_POST["filtro_aceite"],
+        ":filtro_aire"   => $_POST["filtro_aire"],
+      ]);
 
-      if ($statement->rowCount() > 0) {
-        $error = "Este RUT ya está registrado";
-      } else {
-        $conn
-        ->prepare("INSERT INTO info_cliente (rut, nombre, telefono) VALUES (:rut, :nombre, :telefono)")
-        ->execute([
-          ":rut" => $_POST["rut"],
-          ":nombre" => $_POST["nombre"],
-          ":telefono" => $_POST["telefono"],
-        ]);
+      $_SESSION["flash"] = ["message" => "Vehiculo {$_POST['patente']} Agregado!"];
 
-        $user = $statement->fetch(PDO::FETCH_ASSOC);
-
-        session_start();
-        $_SESSION["user"] = $user;
-        
-        header("Location: index.php");
-      }
-
-
+      header("Location: home.php");
+      return;
     }
   }
 ?>
 
-<?php require "partials/header.php"?>
+<?php require "partials/header.php" ?>
 
 <div class="container pt-5">
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header">Agrega un nuevo Cliente</div>
+        <div class="card-header">Agregar Vehiculo</div>
         <div class="card-body">
-          <?php if ($error) { ?>
-              <p class="text-danger">
+          <?php if ($error): ?>
+            <p class="text-danger">
               <?= $error ?>
-              </p>
-                
-          <?php } ?>
+            </p>
+          <?php endif ?>
           <form method="POST" action="add.php">
-          <div class="mb-3 row">
-              <label for="rut" class="col-md-4 col-form-label text-md-end">RUT</label>
+            <div class="mb-3 row">
+                <label for="patente" class="col-md-4 col-form-label text-md-end">Patente</label>
+
+                <div class="col-md-6">
+                  <input id="patente" type="text" class="form-control" name="patente" placeholder = "Ingrese la patente" require autocomplete="rut" autofocus>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="marca" class="col-md-4 col-form-label text-md-end">Marca</label>
+
+                <div class="col-md-6">
+                  <input id="marca" type="text" class="form-control" name="marca" placeholder = "Ingrese la Marca del Vehiculo"  autocomplete="marca" autofocus>
+                </div>
+              </div>
+
+              <div class="mb-3 row">
+              <label for="modelo" class="col-md-4 col-form-label text-md-end">Modelo</label>
 
               <div class="col-md-6">
-                <input id="rut" type="text" class="form-control" name="rut" placeholder = "Ingrese el rut" required autocomplete="rut" autofocus>
+                  <input id="modelo" type="text" class="form-control" name="modelo" placeholder = "Ingrese el Modelo del Vehiculo"  autocomplete="modelo" autofocus>
+                </div>
               </div>
-            </div>
-            <div class="mb-3 row">
-              <label for="nombre" class="col-md-4 col-form-label text-md-end">Nombre</label>
+              
+              <div class="mb-3 row">
+                <label for="year" class="col-md-4 col-form-label text-md-end">Año</label>
 
-              <div class="col-md-6">
-                <input id="nombre" type="text" class="form-control" name="nombre" placeholder = "Ingrese el Nombre" required autocomplete="nombre" autofocus>
+                <div class="col-md-6">
+                  <input id="year" type="text" class="form-control" name="year" placeholder = "Ingrese el año del Vehiculo"  autocomplete="year" autofocus>
+                </div>
               </div>
-            </div>
-            
-            <div class="mb-3 row">
-              <label for="telefono" class="col-md-4 col-form-label text-md-end">Número de telefono</label>
+              
+              <div class="mb-3 row">
+                <label for="aceite" class="col-md-4 col-form-label text-md-end">Aceite</label>
 
-              <div class="col-md-6">
-                <input id="telefono" type="text" class="form-control" name="telefono" placeholder = "Ingrese el Numero de teléfono" required autocomplete="telefono" autofocus>
+                <div class="col-md-6">
+                  <input id="aceite" type="text" class="form-control" name="aceite" placeholder = "Ingrese el nivel de aceite del Vehiculo"  autocomplete="aceite" autofocus>
+                </div>
               </div>
-            </div>
 
-            <div class="mb-3 row">
-              <div class="col-md-6 offset-md-4">
-                <button type="submit" class="btn btn-primary">Guardar</button>
+              <div class="mb-3 row">
+                <label for="vol_aceite" class="col-md-4 col-form-label text-md-end">Volumen de aceite</label>
+
+                <div class="col-md-6">
+                  <input id="vol_aceite" type="text" class="form-control" name="vol_aceite" placeholder = "Ingrese el Volumen de aceite"  autocomplete="vol_aceite" autofocus>
+                </div>
               </div>
-            </div>
-          </form>
+
+              <div class="mb-3 row">
+                <label for="color" class="col-md-4 col-form-label text-md-end">Color</label>
+
+                <div class="col-md-6">
+                  <input id="color" type="text" class="form-control" name="color" placeholder = "Ingrese el color del Vehiculo"  autocomplete="color" autofocus>
+                </div>
+              </div>
+              
+              <div class="mb-3 row">
+                <label for="motor" class="col-md-4 col-form-label text-md-end">Motor</label>
+
+                <div class="col-md-6">
+                  <input id="motor" type="text" class="form-control" name="motor" placeholder = "Ingrese el motor del Vehiculo"  autocomplete="motor" autofocus>
+                </div>
+              </div>
+              
+              <div class="mb-3 row">
+                <label for="combustible" class="col-md-4 col-form-label text-md-end">Combustible</label>
+
+                <div class="col-md-6">
+                  <input id="combustible" type="text" class="form-control" name="combustible" placeholder = "Ingrese el combustible del Vehiculo"  autocomplete="combustible" autofocus>
+                </div>
+              </div>
+              
+              <div class="mb-3 row">
+                <label for="filtro_aceite" class="col-md-4 col-form-label text-md-end">Filtro de Aceite</label>
+
+                <div class="col-md-6">
+                  <input id="filtro_aceite" type="text" class="form-control" name="filtro_aceite" placeholder = "Ingrese el filtro de aceite del Vehiculo"  autocomplete="filtro_aceite" autofocus>
+                </div>
+              </div>
+              
+              <div class="mb-3 row">
+                <label for="filtro_aire" class="col-md-4 col-form-label text-md-end">Filtro de aire</label>
+
+                <div class="col-md-6">
+                  <input id="filtro_aire" type="text" class="form-control" name="filtro_aire" placeholder = "Ingrese el Filtro de aire del Vehiculo"  autocomplete="filtro_aire" autofocus>
+                </div>
+              </div>
+
+              <div class="mb-3 row">
+                <div class="col-md-6 offset-md-4">
+                  <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+              </div>
+            </form>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<?php require "partials/footer.php"?>
+<?php require "partials/footer.php" ?>
 

@@ -68,14 +68,14 @@ DROP TABLE IF EXISTS `vehiculo`;
 CREATE TABLE IF NOT EXISTS `vehiculo` (
   user_id INT NOT NULL,
   `patente` varchar(10) NOT NULL,
-  `año` int(11) DEFAULT NULL,
+  `marca` varchar(15) DEFAULT NULL,
+  `modelo` varchar(15) DEFAULT NULL,
+  `year` int(11) DEFAULT NULL,
   `aceite` varchar(15) DEFAULT NULL,
   `vol_aceite` varchar(6) DEFAULT NULL,
   `color` char(10) DEFAULT NULL,
-  `modelo` varchar(15) DEFAULT NULL,
   `motor` varchar(5) DEFAULT NULL,
   `combustible` char(10) DEFAULT NULL,
-  `marca` varchar(15) DEFAULT NULL,
   `filtro_aceite` varchar(12) DEFAULT NULL,
   `filtro_aire` varchar(12) DEFAULT NULL,
   PRIMARY KEY (`patente`),
@@ -83,6 +83,14 @@ CREATE TABLE IF NOT EXISTS `vehiculo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+CREATE TABLE contacts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    user_id INT NOT NULL,
+    phone_number VARCHAR(255),
+
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
 INSERT INTO `vehiculo` (user_id,`patente`, `año`, `aceite`, `vol_aceite`, `color`, `modelo`, `motor`, `combustible`, `marca`, `filtro_aceite`, `filtro_aire`) VALUES
 (1,'G4-SD-41', 2017, NULL, NULL, 'GRIS', 'COROLLA', '3,0', 'BENCINA', 'TOYOTA', NULL, NULL);
 
