@@ -9,22 +9,31 @@
       
     }else if(strlen($_POST["telefono"])< 9){
       $error = "El numero de Teléfono debe contener al menos 9 carácteres";
-
     }else{
-
-      $rut      = $_POST["rut"];
-      $nombre   = $_POST["nombre"];
-      $telefono = $_POST["telefono"];
-      
-      $statement = $conn->prepare("INSERT INTO info_cliente (rut, nombre, telefono) VALUES (:rut, :nombre, :telefono)");
-      
-      $statement->bindParam(":rut",      $_POST["rut"]);
-      $statement->bindParam(":nombre",   $_POST["nombre"]);
-      $statement->bindParam(":telefono", $_POST["telefono"]);
+      $statement = $conn->prepare("SELECT * FROM info_cliente WHERE rut = :rut");
+      $statement->bindParam(":rut", $_POST["rut"]);
       $statement->execute();
 
-      
-      header("Location: add_car.php");
+      if ($statement->rowCount() > 0) {
+        $error = "Este RUT ya está registrado";
+      } else {
+        $conn
+        ->prepare("INSERT INTO info_cliente (rut, nombre, telefono) VALUES (:rut, :nombre, :telefono)")
+        ->execute([
+          ":rut" => $_POST["rut"],
+          ":nombre" => $_POST["nombre"],
+          ":telefono" => $_POST["telefono"],
+        ]);
+
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+        session_start();
+        $_SESSION["user"] = $user;
+        
+        header("Location: index.php");
+      }
+
+
     }
   }
 ?>

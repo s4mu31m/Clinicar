@@ -25,7 +25,7 @@ require "db.php";
             <h3 class="card-title text-capitalize"><?=$cliente["nombre"]?></h3>
             <p class="m-2"><?=$cliente["telefono"]?></p>
             <a href="edit.php?rut=<?=$cliente["rut"]?> "class="btn btn-secondary mb-2">Editar cliente</a>
-            <a href="#?rut=<?=$cliente["rut"]?> "class="btn btn-secondary mb-2">Ver mas informacion</a>
+            <a href="add_car.php?id=<?=$cliente["id"]?> "class="btn btn-secondary mb-2">Agregar vehiculo asociado</a>
             <a href="delete.php?rut=<?=$cliente["rut"]?> " class="btn btn-danger mb-2">Eliminar cliente</a>
           </div>
         </div>

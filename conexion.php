@@ -4,7 +4,7 @@ $mysqli = new mysqli('localhost','root','100199','clinicar');
 
 if($mysqli-> connect_errno)
 {
-	echo 'Falló la conexión'. $mysqli->connect_error;
+	echo 'FallÃ³ la conexiÃ³n'. $mysqli->connect_error;
 	die();
 
 }
